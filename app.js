@@ -81,7 +81,7 @@ function renderDashboard(user) {
     // 1. Render My Wishlist
     const myItems = appData.wishlist.filter(item => item.user_id === user.id);
     const myWishlist = document.getElementById('my-wishlist');
-    
+
     myWishlist.innerHTML = myItems.map(item => `
         <div class="art-card">
             <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
@@ -124,7 +124,7 @@ function renderDashboard(user) {
             document.getElementById('target-name').textContent = targetUser.name;
             const targetItems = appData.wishlist.filter(item => item.user_id === targetUser.id);
             const targetWishlist = document.getElementById('target-wishlist');
-            
+
             if (targetItems.length === 0) {
                 targetWishlist.innerHTML = '<p><em>This artist has not added any OCs to their wishlist yet!</em></p>';
             } else {
@@ -140,7 +140,7 @@ function renderDashboard(user) {
         // Show or hide uploaded gift preview
         const uploadedGiftDiv = document.getElementById('my-uploaded-gift');
         const giftPreviewImg = document.getElementById('my-gift-preview');
-        
+
         if (user.gift_image) {
             uploadedGiftDiv.classList.remove('hidden');
             giftPreviewImg.src = user.gift_image;
@@ -153,7 +153,7 @@ function renderDashboard(user) {
     // 3. Render Completed Gifts Gallery
     const gallery = document.getElementById('all-gifts-gallery');
     const completedGifts = appData.users.filter(u => u.gift_image);
-    
+
     if (completedGifts.length === 0) {
         gallery.innerHTML = '<p>No gifts uploaded yet!</p>';
     } else {
@@ -247,7 +247,7 @@ async function saveWishlistEdit(event, itemId) {
     event.preventDefault();
     const fileInput = document.getElementById(`edit-img-${itemId}`);
     const description = document.getElementById(`edit-desc-${itemId}`).value;
-    
+
     const updates = { description };
 
     try {
