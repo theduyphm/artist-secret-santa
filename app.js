@@ -267,35 +267,6 @@ async function deleteWishlistItem(itemId) {
     await loadData();
 }
 
-// Draw Secret Santa Names
-document.getElementById('draw-names-btn').onclick = async () => {
-    if (appData.users.length < 2) {
-        return alert('Need at least 2 artists to draw!');
-    }
-    if (!confirm('Are all artists signed up? This will assign everyone a Secret Santa!')) return;
-
-    const givers = [...appData.users];
-    let receivers = [...appData.users];
-    let valid = false;
-
-    while (!valid) {
-        for (let i = receivers.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [receivers[i], receivers[j]] = [receivers[j], receivers[i]];
-        }
-        valid = givers.every((giver, idx) => giver.id !== receivers[idx].id);
-    }
-
-    // Update all assignments in Supabase
-    for (let i = 0; i < givers.length; i++) {
-        await db.from('users')
-            .update({ assigned_to: receivers[i].id })
-            .eq('id', givers[i].id);
-    }
-
-    await db.from('app_state').update({ drawn: true }).eq('id', 1);
-    await loadData();
-};
 
 // Upload Finished Gift
 document.getElementById('gift-upload-form').onsubmit = async (e) => {
