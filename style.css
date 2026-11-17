@@ -15,6 +15,8 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
+    text-align: center;
+    /* ⬅️ Adds global centering */
 }
 
 header {
@@ -87,6 +89,8 @@ button.secondary:hover {
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    /* ⬅️ Centers form elements inside cards */
     gap: 0.8rem;
     margin-top: 1rem;
 }
@@ -98,6 +102,11 @@ textarea {
     border-radius: 6px;
     font-family: inherit;
     font-size: 1rem;
+    text-align: center;
+    /* ⬅️ Centers text inside input boxes */
+    width: 80%;
+    max-width: 350px;
+    /* ⬅️ Keeps input boxes from getting too wide */
 }
 
 textarea {
@@ -108,6 +117,8 @@ textarea {
 .user-grid {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    /* ⬅️ Centers the artist name buttons */
     gap: 0.8rem;
     margin: 1rem 0;
 }
@@ -120,6 +131,8 @@ textarea {
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    justify-items: center;
+    /* ⬅️ Centers gallery cards */
     gap: 1.2rem;
     margin-top: 1.5rem;
 }
