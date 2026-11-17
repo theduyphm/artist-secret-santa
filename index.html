@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Secret Santa 🎨🎄</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>🎨 Artist Secret Santa 🎄</h1>
+        <div id="user-controls" class="hidden">
+            <span>Logged in as: <strong id="current-user-name"></strong></span>
+            <button id="logout-btn" class="secondary">Switch Artist</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- LOGIN / USER SELECT VIEW -->
+        <section id="login-view" class="card">
+            <h2>Who are you?</h2>
+            <p>Select your name or join the list:</p>
+            <div id="user-list" class="user-grid"></div>
+            
+            <hr>
+            <form id="new-user-form">
+                <input type="text" id="new-username" placeholder="Enter your artist name..." required>
+                <button type="submit">Join Secret Santa</button>
+            </form>
+        </section>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view" class="hidden">
+            
+            <!-- SECRET SANTA ASSIGNMENT SECTION -->
+            <section class="card highlight-card">
+                <h2>🎅 Your Secret Santa Assignment</h2>
+                <div id="pre-draw-area">
+                    <p>Waiting for everyone to join and add their OCs! Once everyone is ready, click below to assign names.</p>
+                    <p><strong>Current Artists Joined:</strong> <span id="participant-count">0</span></p>
+                    <button id="draw-names-btn">🎲 Draw Names for Everyone</button>
+                </div>
+
+                <div id="post-draw-area" class="hidden">
+                    <p class="big-reveal">You are drawing a gift for: <strong id="target-name"></strong>!</p>
+                    
+                    <h3>Their OC Wishlist:</h3>
+                    <div id="target-wishlist" class="gallery-grid"></div>
+
+                    <hr>
+                    <h3>🎁 Upload Your Finished Gift</h3>
+                    <form id="gift-upload-form">
+                        <input type="file" id="gift-file" accept="image/*" required>
+                        <textarea id="gift-message" placeholder="Write a nice holiday note to accompany your art..."></textarea>
+                        <button type="submit" id="gift-submit-btn">Upload Gift</button>
+                    </form>
+                    <div id="my-uploaded-gift" class="hidden">
+                        <p class="success-text">✅ You have uploaded your gift! (Submitting again will replace it)</p>
+                        <img id="my-gift-preview" src="" alt="Your uploaded gift">
+                    </div>
+                </div>
+            </section>
+
+            <!-- MY WISHLIST SECTION -->
+            <section class="card">
+                <h2>✨ My OC Wishlist</h2>
+                <p>Upload reference sheets or pictures of characters you'd love someone to draw!</p>
+                
+                <form id="wishlist-form">
+                    <input type="file" id="oc-image" accept="image/*" required>
+                    <textarea id="oc-desc" placeholder="Character name, personality, pose ideas, or color notes..." required></textarea>
+                    <button type="submit" id="wishlist-submit-btn">Add to My Wishlist</button>
+                </form>
+
+                <div id="my-wishlist" class="gallery-grid"></div>
+            </section>
+
+            <!-- GIFT EXCHANGE GALLERY -->
+            <section class="card">
+                <h2>🎄 Completed Gifts Gallery</h2>
+                <p>Check back here on gift exchange day to see everyone's artwork!</p>
+                <button id="toggle-gifts-btn" class="secondary">Reveal Completed Gifts</button>
+                <div id="all-gifts-gallery" class="gallery-grid hidden"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>
