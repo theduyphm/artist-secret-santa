@@ -19,43 +19,46 @@
 
     <main>
         <!-- LOGIN / USER SELECT VIEW -->
-        <section id="login-view" class="card">
-            <p><strong>Hellooo everyone!</strong> </p>
-            <p>Kune's here, I'm organising an Artist Secret Santa again this year yayyy! </p>
-            <p>(This year I'm a lot more prepared hehe)</p>
+        <div id="login-view">
+            <section class="card">
+                <p><strong>Hellooo everyone!</strong></p>
+                <p>Kune's here, I'm organising an Artist Secret Santa again this year yayyy!</p>
+                <p>(This year I'm a lot more prepared hehe)</p>
+            </section>
 
-        </section>
-        <section id="login-view" class="card">
+            <section class="card">
+                <h2>Who are you?</h2>
+                <p>Select your name or join the list:</p>
+                <div id="user-list" class="user-grid"></div>
 
-            <h2>Who are you?</h2>
-            <p>Select your name or join the list:</p>
-            <div id="user-list" class="user-grid"></div>
+                <div id="join-section">
+                    <hr>
+                    <form id="new-user-form">
+                        <input type="text" id="new-username" placeholder="Enter your artist name..." required>
+                        <button type="submit">Join Secret Santa</button>
+                    </form>
+                </div>
+            </section>
 
-            <div id="join-section">
-                <hr>
-                <form id="new-user-form">
-                    <input type="text" id="new-username" placeholder="Enter your artist name..." required>
-                    <button type="submit">Join Secret Santa</button>
-                </form>
-            </div>
-        </section>
-        <section id="login-view" class="card">
-            <div class="rules-content">
-                <h2>📜</h2>
-                <h2>Secret Santa Rules</h2>
+            <section class="card">
+                <div class="rules-content">
+                    <h2>📜</h2>
+                    <h2>Secret Santa Rules</h2>
 
-                <p>1. Each participant writes a wishlist for their Secret Santa.</p>
-                <p>2. It's usually your Original Characters or a favorite character from a show/videogame, but it can be
-                    anything, a portrait of yourself, your pet, loved ones, etc.</p>
-                <p>3. On<strong> November 25th</strong>, we will assign a <strong>Secret Santa</strong> to each
-                    participant. (be sure to have your wishlist ready by then)</p>
-                <p>4. Your task as a Secret Santa will be to draw a character from your assigned victim's wishlist. 😈
-                </p>
-                <p>5. On<strong> December 25th</strong>, everyone will send their gift on the WhatsApp group chat.</p>
+                    <p>1. Each participant writes a wishlist for their Secret Santa.</p>
+                    <p>2. It's usually your Original Characters or a favorite character from a show/videogame, but it
+                        can be anything, a portrait of yourself, your pet, loved ones, etc.</p>
+                    <p>3. On <strong>November 25th</strong>, we will assign a <strong>Secret Santa</strong> to each
+                        participant. (be sure to have your wishlist ready by then)</p>
+                    <p>4. Your task as a Secret Santa will be to draw a character from your assigned victim's wishlist.
+                        😈</p>
+                    <p>5. On <strong>December 25th</strong>, everyone will send their gift on the WhatsApp group chat.
+                    </p>
 
-                <p style="margin-top: 1rem;"><strong>Merry Christmas! 🎄</strong></p>
-            </div>
-        </section>
+                    <p style="margin-top: 1rem;"><strong>Merry Christmas! 🎄</strong></p>
+                </div>
+            </section>
+        </div>
 
 
         <!-- DASHBOARD VIEW -->
