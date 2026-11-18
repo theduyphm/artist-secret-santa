@@ -11,7 +11,7 @@ const loginView = document.getElementById('login-view');
 const dashboardView = document.getElementById('dashboard-view');
 const userControls = document.getElementById('user-controls');
 
-// Helper: Upload image file to Supabase Storage and return public URL
+// Helper: Upload image file to Supabase Storage (used for wishlist ref sheets)
 async function uploadImageToSupabase(file) {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${fileExt}`;
@@ -136,40 +136,6 @@ function renderDashboard(user) {
                 `).join('');
             }
         }
-
-        // Show or hide uploaded gift preview
-        const uploadedGiftDiv = document.getElementById('my-uploaded-gift');
-        const giftPreviewImg = document.getElementById('my-gift-preview');
-
-        if (user.gift_image) {
-            uploadedGiftDiv.classList.remove('hidden');
-            giftPreviewImg.src = user.gift_image;
-        } else {
-            uploadedGiftDiv.classList.add('hidden');
-            giftPreviewImg.src = '';
-        }
-    }
-
-    // 3. Render Completed Gifts Gallery
-    const gallery = document.getElementById('all-gifts-gallery');
-    const completedGifts = appData.users.filter(u => u.gift_image);
-
-    if (completedGifts.length === 0) {
-        gallery.innerHTML = '<p>No gifts uploaded yet!</p>';
-    } else {
-        gallery.innerHTML = completedGifts.map(giver => {
-            const receiver = appData.users.find(u => u.id === giver.assigned_to);
-            return `
-                <div class="art-card">
-                    <a href="${giver.gift_image}" target="_blank"><img src="${giver.gift_image}" alt="Gift Art"></a>
-                    <div class="art-card-body">
-                        <strong>To: ${receiver ? receiver.name : 'Unknown'}</strong><br>
-                        <small>From: ${giver.name}</small>
-                        <p>${giver.gift_message || ''}</p>
-                    </div>
-                </div>
-            `;
-        }).join('');
     }
 }
 
@@ -264,40 +230,8 @@ async function saveWishlistEdit(event, itemId) {
 async function deleteWishlistItem(itemId) {
     if (!confirm('Remove this OC from your wishlist?')) return;
     await db.from('wishlist_items').delete().eq('id', itemId);
-    await loadData();
+    loadData();
 }
-
-
-// Upload Finished Gift
-document.getElementById('gift-upload-form').onsubmit = async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('gift-submit-btn');
-    btn.disabled = true;
-    btn.textContent = 'Uploading Gift...';
-
-    try {
-        const file = document.getElementById('gift-file').files[0];
-        const message = document.getElementById('gift-message').value;
-        const giftImageUrl = await uploadImageToSupabase(file);
-
-        await db.from('users')
-            .update({ gift_image: giftImageUrl, gift_message: message })
-            .eq('id', currentUserId);
-
-        alert('Gift uploaded! 🎁');
-        e.target.reset();
-        await loadData();
-    } catch (err) {
-        alert('Gift upload failed: ' + err.message);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = 'Upload Gift';
-    }
-};
-
-document.getElementById('toggle-gifts-btn').onclick = () => {
-    document.getElementById('all-gifts-gallery').classList.toggle('hidden');
-};
 
 // Start
 loadData();
