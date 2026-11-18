@@ -158,8 +158,7 @@ function renderDashboard(user) {
             `;
         }).join('');
     }
-    setupAutoScroll('all-wishlists-gallery')
-    setupAutoScroll('target-wishlist')
+
 }
 
 // Join / Create User
@@ -255,36 +254,6 @@ async function deleteWishlistItem(itemId) {
     await db.from('wishlist_items').delete().eq('id', itemId);
     loadData();
 }
-
-// Auto-scroll carousel function for horizontal galleries
-function setupAutoScroll(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    let scrollSpeed = 1; // Pixels per tick (adjust for speed)
-    let isPaused = false;
-
-    // Pause scrolling when the user hovers or touches the gallery
-    container.onmouseenter = () => { isPaused = true; };
-    container.onmouseleave = () => { isPaused = false; };
-    container.ontouchstart = () => { isPaused = true; };
-    container.ontouchend = () => { isPaused = false; };
-
-    // Continuous scroll loop
-    setInterval(() => {
-        if (isPaused) return;
-
-        container.scrollLeft += scrollSpeed;
-
-        // If it reaches the end, smoothly loop back to the start
-        if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 1) {
-            container.scrollLeft = 0;
-        }
-    }, 30); // Lower ms = smoother/faster
-}
-
-// Call this inside your loadData or after rendering the galleries
-// (You can activate it for either or both horizontal galleries)
 
 // Start
 loadData();
