@@ -47,6 +47,12 @@ async function loadData() {
 function render() {
     const currentUser = appData.users.find(u => u.id === currentUserId);
 
+    // Hide or show the join form depending on whether names have been drawn
+    const joinSection = document.getElementById('join-section');
+    if (joinSection) {
+        joinSection.classList.toggle('hidden', appData.drawn);
+    }
+
     if (!currentUser) {
         loginView.classList.remove('hidden');
         dashboardView.classList.add('hidden');
