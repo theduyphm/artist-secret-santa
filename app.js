@@ -158,7 +158,6 @@ function renderDashboard(user) {
             `;
         }).join('');
     }
-
 }
 
 // Join / Create User
