@@ -208,3 +208,39 @@ hr {
     min-height: 60px;
     font-size: 0.9rem;
 }
+
+/* Horizontal Scrolling Gallery */
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1.2rem;
+    padding: 1rem 0.2rem;
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;
+    /* Aligns items to the left so you can scroll through them */
+}
+
+.horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-track {
+    background: var(--bg);
+    border-radius: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 4px;
+}
+
+.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* Fixed width for cards inside the horizontal scroller */
+.horizontal-scroll-container .art-card {
+    flex: 0 0 260px;
+    /* Prevents cards from shrinking */
+    scroll-snap-align: start;
+}
