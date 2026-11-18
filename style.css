@@ -209,38 +209,21 @@ hr {
     font-size: 0.9rem;
 }
 
-/* Horizontal Scrolling Gallery */
-.horizontal-scroll-container {
+/* Horizontal Scrollable Gallery Container */
+.horizontal-scroll-gallery {
     display: flex;
+    flex-direction: row;
     overflow-x: auto;
     gap: 1.2rem;
-    padding: 1rem 0.2rem;
+    padding: 1rem 0.5rem;
     scroll-snap-type: x mandatory;
     justify-content: flex-start;
-    /* Aligns items to the left so you can scroll through them */
+    /* Aligns items to the left so scrolling starts naturally */
 }
 
-.horizontal-scroll-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-track {
-    background: var(--bg);
-    border-radius: 4px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb {
-    background: #bdc3c7;
-    border-radius: 4px;
-}
-
-.horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: #95a5a6;
-}
-
-/* Fixed width for cards inside the horizontal scroller */
-.horizontal-scroll-container .art-card {
+/* Individual Art Cards inside the horizontal scroll */
+.horizontal-scroll-gallery .art-card {
     flex: 0 0 260px;
-    /* Prevents cards from shrinking */
+    /* Fixed width for each card so they don't squish */
     scroll-snap-align: start;
 }
