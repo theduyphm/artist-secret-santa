@@ -230,3 +230,14 @@ hr {
     border-radius: 8px;
     overflow: hidden;
 }
+
+.rules-card {
+    background-color: #f9f9f9;
+    border-left: 4px solid var(--primary, #646cff);
+    margin-bottom: 1.5rem;
+}
+
+.rules-card ul {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
