@@ -209,21 +209,22 @@ hr {
     font-size: 0.9rem;
 }
 
-/* Horizontal Scrollable Gallery Container */
 .horizontal-scroll-gallery {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
     gap: 1.2rem;
     padding: 1rem 0.5rem;
-    scroll-snap-type: x mandatory;
-    justify-content: flex-start;
-    /* Aligns items to the left so scrolling starts naturally */
+    scroll-behavior: smooth;
+    /* Smooths manual scrolling */
 }
 
-/* Individual Art Cards inside the horizontal scroll */
-.horizontal-scroll-gallery .art-card {
-    flex: 0 0 260px;
-    /* Fixed width for each card so they don't squish */
-    scroll-snap-align: start;
+/* Hide scrollbar for a cleaner carousel look (optional) */
+.horizontal-scroll-gallery::-webkit-scrollbar {
+    height: 6px;
+}
+
+.horizontal-scroll-gallery::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
 }
