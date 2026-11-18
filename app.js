@@ -137,6 +137,27 @@ function renderDashboard(user) {
             }
         }
     }
+
+    // 3. Render All Artists' Wishlists Gallery
+    const allGallery = document.getElementById('all-wishlists-gallery');
+
+    if (appData.wishlist.length === 0) {
+        allGallery.innerHTML = '<p><em>No OCs added to any wishlists yet!</em></p>';
+    } else {
+        allGallery.innerHTML = appData.wishlist.map(item => {
+            const owner = appData.users.find(u => u.id === item.user_id);
+            const ownerName = owner ? owner.name : 'Unknown Artist';
+            return `
+                <div class="art-card">
+                    <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+                    <div class="art-card-body">
+                        <strong>${ownerName}'s OC</strong>
+                        <p>${item.description}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 // Join / Create User
