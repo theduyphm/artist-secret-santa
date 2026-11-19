@@ -288,3 +288,15 @@ hr {
     margin: 0;
     /* Overrides default card margins so it centers cleanly */
 }
+
+.artist-directory-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.artist-directory-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
