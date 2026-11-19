@@ -161,7 +161,8 @@ function renderDashboard(user) {
     } else {
         allGallery.innerHTML = appData.users.map(artist => {
             const artistItems = appData.wishlist.filter(item => item.user_id === artist.id);
-            const coverImg = artistItems.length > 0 ? artistItems[0].image_url : null;
+            const itemWithImage = artistItems.find(item => item.image_url);
+            const coverImg = itemWithImage ? itemWithImage.image_url : null;
             const shortBio = artist.bio
                 ? (artist.bio.length > 60 ? artist.bio.substring(0, 60) + '...' : artist.bio)
                 : 'No bio yet.';
@@ -222,32 +223,32 @@ document.getElementById('wishlist-form').onsubmit = async (e) => {
     const fileInput = document.getElementById('oc-image');
     const file = fileInput.files[0];
 
-    if (!file) return;
-
-    // Check if file is larger than 20MB
-    if (file.size > 20 * 1024 * 1024) {
+    // Only check file size if an image was actually chosen
+    if (file && file.size > 20 * 1024 * 1024) {
         alert('File size exceeds 20MB! Please choose a smaller image.');
         return;
     }
 
     const btn = document.getElementById('wishlist-submit-btn');
     btn.disabled = true;
-    btn.textContent = 'Uploading...';
+    btn.textContent = file ? 'Uploading...' : 'Saving...';
 
     try {
-        const description = document.getElementById('oc-desc').value;
-        const imageUrl = await uploadImageToSupabase(file);
+        const description = document.getElementById('oc-desc').value.trim();
+        const imageUrl = file ? await uploadImageToSupabase(file) : null;
 
-        await db.from('wishlist_items').insert([{
+        const { error } = await db.from('wishlist_items').insert([{
             user_id: currentUserId,
             description,
             image_url: imageUrl
         }]);
 
+        if (error) throw error;
+
         e.target.reset();
         await loadData();
     } catch (err) {
-        alert('Upload failed: ' + err.message);
+        alert('Failed to add to wishlist: ' + err.message);
     } finally {
         btn.disabled = false;
         btn.textContent = 'Add to My Wishlist';
@@ -399,10 +400,9 @@ function renderWishlistCard(item, isOwner = false) {
         `).join('')
         : '<p class="no-comments"><small><em>No questions yet.</em></small></p>';
 
-
     return `
         <div class="art-card">
-            <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+            ${item.image_url ? `<a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>` : ''}
             <div class="art-card-body">
                 <div id="view-mode-${item.id}">
                     <p>${escapeHtml(item.description)}</p>
