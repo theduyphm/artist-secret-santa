@@ -57,8 +57,10 @@
     if (pastArtworks.length === 0) {
       gridContainer.innerHTML = '<p><em>No artworks added to the gallery yet!</em></p>';
     } else {
-      gridContainer.innerHTML = pastArtworks.map(art => {
-        // Automatically builds the path: gallery_2025/filename.png
+      // Randomly shuffle the array every time the page loads
+      const shuffledArtworks = [...pastArtworks].sort(() => Math.random() - 0.5);
+
+      gridContainer.innerHTML = shuffledArtworks.map(art => {
         const imgPath = `gallery_2025/${art.file}`;
         return `
                 <div class="art-card gallery-item">
