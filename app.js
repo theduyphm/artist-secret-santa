@@ -90,13 +90,12 @@ function renderUserList() {
 function renderDashboard(user) {
 
     // 0. Render My Artist Profile
+
     document.getElementById('profile-display-name').textContent = user.name;
     document.getElementById('profile-display-bio').textContent = user.bio || 'No bio added yet.';
-    document.getElementById('profile-display-socials').textContent = user.socials ? `🔗 ${user.socials}` : '';
 
     document.getElementById('edit-profile-name').value = user.name;
     document.getElementById('edit-profile-bio').value = user.bio || '';
-    document.getElementById('edit-profile-socials').value = user.socials || '';
 
 
     // 1. Render My Wishlist
@@ -146,10 +145,7 @@ function renderDashboard(user) {
 
             const targetInfo = document.getElementById('target-profile-info');
             if (targetInfo) {
-                targetInfo.innerHTML = `
-                    ${targetUser.bio ? `<p><em>"${targetUser.bio}"</em></p>` : ''}
-                    ${targetUser.socials ? `<p><strong>Socials:</strong> ${targetUser.socials}</p>` : ''}
-                `;
+                targetInfo.innerHTML = targetUser.bio ? `<p><em>"${targetUser.bio}"</em></p>` : '';
             }
 
             const targetItems = appData.wishlist.filter(item => item.user_id === targetUser.id);
@@ -295,13 +291,12 @@ document.getElementById('profile-edit-form').onsubmit = async (e) => {
     e.preventDefault();
     const newName = document.getElementById('edit-profile-name').value.trim();
     const newBio = document.getElementById('edit-profile-bio').value.trim();
-    const newSocials = document.getElementById('edit-profile-socials').value.trim();
 
     if (!newName) return;
 
     const { error } = await db
         .from('users')
-        .update({ name: newName, bio: newBio, socials: newSocials })
+        .update({ name: newName, bio: newBio })
         .eq('id', currentUserId);
 
     if (error) {
