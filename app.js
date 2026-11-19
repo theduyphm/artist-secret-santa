@@ -57,6 +57,7 @@ async function loadData() {
 }
 
 function render() {
+    renderAllArtistsDirectory();
     const currentUser = appData.users.find(u => u.id === currentUserId);
 
     // Explicitly hide the join section if names are drawn
@@ -180,6 +181,7 @@ function renderDashboard(user) {
     }
 
     // 3. Render All Artists Directory Gallery
+    /*
     const allGallery = document.getElementById('all-wishlists-gallery');
 
     if (appData.users.length === 0) {
@@ -205,6 +207,7 @@ function renderDashboard(user) {
             `;
         }).join('');
     }
+        */
 }
 
 // Join / Create User
@@ -560,6 +563,37 @@ window.revealSecretSanta = function () {
     document.getElementById('target-spoiler-gate').classList.add('hidden');
     document.getElementById('target-reveal-content').classList.remove('hidden');
 };
+
+// Render the All Participating Artists directory (visible both before and after login)
+function renderAllArtistsDirectory() {
+    const allGallery = document.getElementById('all-wishlists-gallery');
+    if (!allGallery) return;
+
+    if (appData.users.length === 0) {
+        allGallery.innerHTML = '<p><em>No artists have joined yet!</em></p>';
+        return;
+    }
+
+    allGallery.innerHTML = appData.users.map(artist => {
+        const artistItems = appData.wishlist.filter(item => item.user_id === artist.id);
+        const itemWithImage = artistItems.find(item => item.image_url);
+        const coverImg = itemWithImage ? itemWithImage.image_url : null;
+        const shortBio = artist.bio
+            ? (artist.bio.length > 60 ? artist.bio.substring(0, 60) + '...' : artist.bio)
+            : 'No bio yet.';
+
+        return `
+            <div class="art-card artist-directory-card" onclick="openArtistModal('${artist.id}')" style="cursor: pointer;">
+                ${coverImg ? `<img src="${coverImg}" alt="${escapeHtml(artist.name)}'s OC">` : ''}
+                <div class="art-card-body">
+                    <strong>${escapeHtml(artist.name)}</strong>
+                    <p><small>${escapeHtml(shortBio)}</small></p>
+                    <span class="badge"><small>${artistItems.length} OC${artistItems.length === 1 ? '' : 's'}</small></span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
 
 // Start
