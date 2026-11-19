@@ -66,28 +66,52 @@
         <div id="dashboard-view" class="hidden">
 
 
-
-            <!-- MY WISHLIST SECTION -->
+            <!-- MY ARTIST PROFILE & WISHLIST SECTION -->
             <section class="card">
-                <h2>Write your Wishlist 🎁</h2>
+                <h2>🎨 My Artist Profile</h2>
 
+                <!-- View Mode -->
+                <div id="profile-view-mode">
+                    <h3 id="profile-display-name"></h3>
+                    <p id="profile-display-bio" class="profile-bio"></p>
+                    <p id="profile-display-socials" class="profile-socials"></p>
+                    <button type="button" class="secondary small-btn" onclick="toggleProfileEdit(true)">Edit
+                        Profile</button>
+                </div>
+
+                <!-- Edit Mode (Hidden by default) -->
+                <form id="profile-edit-form" class="hidden">
+                    <input type="text" id="edit-profile-name" placeholder="Artist Name" required>
+                    <textarea id="edit-profile-bio" rows="3"
+                        placeholder="Short bio / art style / likes (optional)"></textarea>
+                    <input type="text" id="edit-profile-socials"
+                        placeholder="Social links, e.g. Instagram / X / Cara (optional)">
+                    <div class="card-actions">
+                        <button type="submit">Save Profile</button>
+                        <button type="button" class="secondary" onclick="toggleProfileEdit(false)">Cancel</button>
+                    </div>
+                </form>
+
+                <hr>
+
+                <!-- Wishlist Subsection -->
+                <h3>✨ My OC Wishlist</h3>
                 <p>Upload reference sheets and pictures of characters you'd love someone to draw!</p>
 
                 <p> <i>It's usually your original characters (OC) or a favorite character from a show/videogame, but it
                         can be anything, a portrait of yourself, your pet, loved ones, etc.</i></p>
 
                 <h3> ⚠️ DEADLINE December 1st ⚠️</h3>
-
                 <form id="wishlist-form">
                     <input type="file" id="oc-image" accept="image/*" required>
-                    <textarea id="oc-desc"
-                        placeholder="character name, personality, lore, pose ideas, or color notes..."
-                        required></textarea>
+                    <textarea id="oc-desc" placeholder="Describe your OC, pose ideas, or notes..." required></textarea>
                     <button type="submit" id="wishlist-submit-btn">Add to My Wishlist</button>
                 </form>
 
                 <div id="my-wishlist" class="horizontal-scroll-gallery"></div>
             </section>
+
+
 
             <!-- SECRET SANTA ASSIGNMENT SECTION -->
             <section class="card highlight-card">

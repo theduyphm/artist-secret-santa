@@ -88,6 +88,17 @@ function renderUserList() {
 }
 
 function renderDashboard(user) {
+
+    // 0. Render My Artist Profile
+    document.getElementById('profile-display-name').textContent = user.name;
+    document.getElementById('profile-display-bio').textContent = user.bio || 'No bio added yet.';
+    document.getElementById('profile-display-socials').textContent = user.socials ? `🔗 ${user.socials}` : '';
+
+    document.getElementById('edit-profile-name').value = user.name;
+    document.getElementById('edit-profile-bio').value = user.bio || '';
+    document.getElementById('edit-profile-socials').value = user.socials || '';
+
+
     // 1. Render My Wishlist
     const myItems = appData.wishlist.filter(item => item.user_id === user.id);
     const myWishlist = document.getElementById('my-wishlist');
@@ -145,6 +156,13 @@ function renderDashboard(user) {
                     </div>
                 `).join('');
             }
+        }
+        const targetInfo = document.getElementById('target-profile-info');
+        if (targetInfo) {
+            targetInfo.innerHTML = `
+            ${targetUser.bio ? `<p><em>"${targetUser.bio}"</em></p>` : ''}
+            ${targetUser.socials ? `<p><strong>Socials:</strong> ${targetUser.socials}</p>` : ''}
+        `;
         }
     }
 
@@ -263,6 +281,35 @@ async function deleteWishlistItem(itemId) {
     await db.from('wishlist_items').delete().eq('id', itemId);
     loadData();
 }
+
+// Toggle Profile Edit Mode
+function toggleProfileEdit(isEditing) {
+    document.getElementById('profile-view-mode').classList.toggle('hidden', isEditing);
+    document.getElementById('profile-edit-form').classList.toggle('hidden', !isEditing);
+}
+
+// Save Profile Updates
+document.getElementById('profile-edit-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const newName = document.getElementById('edit-profile-name').value.trim();
+    const newBio = document.getElementById('edit-profile-bio').value.trim();
+    const newSocials = document.getElementById('edit-profile-socials').value.trim();
+
+    if (!newName) return;
+
+    const { error } = await db
+        .from('users')
+        .update({ name: newName, bio: newBio, socials: newSocials })
+        .eq('id', currentUserId);
+
+    if (error) {
+        alert('Error updating profile: ' + error.message);
+        return;
+    }
+
+    toggleProfileEdit(false);
+    await loadData();
+};
 
 // Start
 loadData();

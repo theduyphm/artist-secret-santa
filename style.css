@@ -241,3 +241,16 @@ hr {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+.profile-bio {
+    max-width: 500px;
+    margin: 0.5rem auto;
+    color: #555;
+    font-style: italic;
+}
+
+.profile-socials {
+    font-size: 0.95rem;
+    word-break: break-word;
+    margin-bottom: 1rem;
+}
