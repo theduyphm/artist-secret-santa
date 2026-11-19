@@ -394,3 +394,20 @@ hr {
     object-fit: cover;
     border-radius: 8px;
 }
+
+.spoiler-box {
+    background: #f8f9fa;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.spoiler-box p {
+    margin: 0.4rem 0;
+}
+
+.spoiler-box button {
+    margin-top: 0.75rem;
+}

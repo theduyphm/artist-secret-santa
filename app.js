@@ -7,6 +7,7 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let appData = { users: [], wishlist: [], drawn: false };
 let currentUserId = localStorage.getItem('secretSantaUserId');
 let currentModalUserId = null;
+let spoilerRevealed = false;
 
 const loginView = document.getElementById('login-view');
 const dashboardView = document.getElementById('dashboard-view');
@@ -142,6 +143,21 @@ function renderDashboard(user) {
     } else {
         preDraw.classList.add('hidden');
         postDraw.classList.remove('hidden');
+
+        // Set the logged-in artist's name in the spoiler warning
+        const spoilerNameEl = document.getElementById('spoiler-user-name');
+        if (spoilerNameEl) spoilerNameEl.textContent = user.name;
+
+        // Toggle between the spoiler gate and the actual assignment
+        const spoilerGate = document.getElementById('target-spoiler-gate');
+        const revealContent = document.getElementById('target-reveal-content');
+        if (spoilerRevealed) {
+            spoilerGate.classList.add('hidden');
+            revealContent.classList.remove('hidden');
+        } else {
+            spoilerGate.classList.remove('hidden');
+            revealContent.classList.add('hidden');
+        }
 
         const targetUser = appData.users.find(u => u.id === user.assigned_to);
         if (targetUser) {
@@ -539,6 +555,11 @@ window.deleteOcComment = async function (itemId, commentIndex) {
     }
 };
 
+window.revealSecretSanta = function () {
+    spoilerRevealed = true;
+    document.getElementById('target-spoiler-gate').classList.add('hidden');
+    document.getElementById('target-reveal-content').classList.remove('hidden');
+};
 
 
 // Start
