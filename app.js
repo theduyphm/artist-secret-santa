@@ -180,21 +180,26 @@ function renderDashboard(user) {
         }
     }
 
-    // 3. Render All Artists' Wishlists Gallery
+    // 3. Render All Artists Directory Gallery
     const allGallery = document.getElementById('all-wishlists-gallery');
 
-    if (appData.wishlist.length === 0) {
-        allGallery.innerHTML = '<p><em>No OCs added to any wishlists yet!</em></p>';
+    if (appData.users.length === 0) {
+        allGallery.innerHTML = '<p><em>No artists have joined yet!</em></p>';
     } else {
-        allGallery.innerHTML = appData.wishlist.map(item => {
-            const owner = appData.users.find(u => u.id === item.user_id);
-            const ownerName = owner ? owner.name : 'Unknown Artist';
+        allGallery.innerHTML = appData.users.map(artist => {
+            const artistItems = appData.wishlist.filter(item => item.user_id === artist.id);
+            const coverImg = artistItems.length > 0 ? artistItems[0].image_url : null;
+            const shortBio = artist.bio
+                ? (artist.bio.length > 60 ? artist.bio.substring(0, 60) + '...' : artist.bio)
+                : 'No bio yet.';
+
             return `
-                <div class="art-card">
-                    <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+                <div class="art-card artist-directory-card" onclick="openArtistModal('${artist.id}')" style="cursor: pointer;">
+                    ${coverImg ? `<img src="${coverImg}" alt="${artist.name}'s OC">` : ''}
                     <div class="art-card-body">
-                        <strong>${ownerName}'s OC</strong>
-                        <p>${item.description}</p>
+                        <strong>${artist.name}</strong>
+                        <p><small>${shortBio}</small></p>
+                        <span class="badge"><small>${artistItems.length} OC${artistItems.length === 1 ? '' : 's'}</small></span>
                     </div>
                 </div>
             `;
@@ -303,9 +308,38 @@ window.toggleProfileEdit = function (isEditing) {
 };
 
 
-// Toggle Profile Preview Modal
+// Open Modal for ANY Artist (Used for both "Preview Profile" and clicking an artist card)
+window.openArtistModal = function (userId) {
+    const artist = appData.users.find(u => u.id === userId);
+    if (!artist) return;
+
+    const artistItems = appData.wishlist.filter(item => item.user_id === artist.id);
+
+    document.getElementById('preview-name').textContent = artist.name;
+    document.getElementById('preview-bio').textContent = artist.bio || 'No bio added yet.';
+
+    const previewWishlist = document.getElementById('preview-wishlist');
+    if (artistItems.length === 0) {
+        previewWishlist.innerHTML = '<p><em>No OCs added to their wishlist yet!</em></p>';
+    } else {
+        previewWishlist.innerHTML = artistItems.map(item => `
+            <div class="art-card">
+                <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+                <div class="art-card-body"><p>${item.description}</p></div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('profile-preview-mode').classList.remove('hidden');
+};
+
+// Toggle Profile Preview Modal (Defaults to opening your own profile when passed true)
 window.toggleProfilePreview = function (isPreviewing) {
-    document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
+    if (isPreviewing) {
+        openArtistModal(currentUserId);
+    } else {
+        document.getElementById('profile-preview-mode').classList.add('hidden');
+    }
 };
 
 // Save Profile Updates
