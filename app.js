@@ -289,8 +289,16 @@ window.toggleProfileEdit = function (isEditing) {
 // Save Profile Updates
 document.getElementById('profile-edit-form').onsubmit = async (e) => {
     e.preventDefault();
-    const newName = document.getElementById('edit-profile-name').value.trim();
-    const newBio = document.getElementById('edit-profile-bio').value.trim();
+    const nameInput = document.getElementById('edit-profile-name');
+    const bioInput = document.getElementById('edit-profile-bio');
+
+    if (!nameInput || !bioInput) {
+        console.error('Missing form inputs in HTML');
+        return;
+    }
+
+    const newName = nameInput.value.trim();
+    const newBio = bioInput.value.trim();
 
     if (!newName) return;
 
