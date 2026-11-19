@@ -23,7 +23,7 @@
             <section class="card">
                 <p><strong>Hellooo everyone!</strong></p>
                 <p>Kune's here, I'm organising an Artist Secret Santa again this year yayyy!</p>
-                <p>(This year I'm a lot more prepared hehe)</p>
+
             </section>
 
             <section class="card">
@@ -74,8 +74,24 @@
                 <div id="profile-view-mode">
                     <h3 id="profile-display-name"></h3>
                     <p id="profile-display-bio" class="profile-bio"></p>
-                    <button type="button" class="secondary small-btn" onclick="toggleProfileEdit(true)">Edit
-                        Profile</button>
+                    <div class="card-actions">
+                        <button type="button" class="secondary small-btn" onclick="toggleProfileEdit(true)">Edit
+                            Profile</button>
+                        <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(true)">Preview
+                            Profile</button>
+                    </div>
+                </div>
+
+                <!-- Preview Mode (Shows what your Secret Santa sees) -->
+                <div id="profile-preview-mode" class="hidden">
+                    <p><small><em>👀 This is how your Secret Santa sees your profile:</em></small></p>
+                    <div class="preview-box">
+                        <h3 id="preview-name"></h3>
+                        <p id="preview-bio" class="profile-bio"></p>
+                        <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
+                    </div>
+                    <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"
+                        style="margin-top: 1rem;">Close Preview</button>
                 </div>
 
                 <!-- Edit Mode (Hidden by default) -->

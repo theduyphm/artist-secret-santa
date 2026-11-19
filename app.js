@@ -127,6 +127,22 @@ function renderDashboard(user) {
         </div>
     `).join('');
 
+    // Populate Profile Preview Mode
+    document.getElementById('preview-name').textContent = user.name;
+    document.getElementById('preview-bio').textContent = user.bio || 'No bio added yet.';
+
+    const previewWishlist = document.getElementById('preview-wishlist');
+    if (myItems.length === 0) {
+        previewWishlist.innerHTML = '<p><em>No OCs added to your wishlist yet!</em></p>';
+    } else {
+        previewWishlist.innerHTML = myItems.map(item => `
+            <div class="art-card">
+                <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+                <div class="art-card-body"><p>${item.description}</p></div>
+            </div>
+        `).join('');
+    }
+
     // 2. Render Secret Santa Status
     document.getElementById('participant-count').textContent = appData.users.length;
     const preDraw = document.getElementById('pre-draw-area');
@@ -314,6 +330,12 @@ document.getElementById('profile-edit-form').onsubmit = async (e) => {
 
     toggleProfileEdit(false);
     await loadData();
+};
+
+// Toggle Profile Preview Mode
+window.toggleProfilePreview = function (isPreviewing) {
+    document.getElementById('profile-view-mode').classList.toggle('hidden', isPreviewing);
+    document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
 };
 
 // Start
