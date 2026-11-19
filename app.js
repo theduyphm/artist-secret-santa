@@ -302,9 +302,9 @@ window.toggleProfileEdit = function (isEditing) {
     document.getElementById('profile-edit-form').classList.toggle('hidden', !isEditing);
 };
 
-// Toggle Profile Preview Mode
+
+// Toggle Profile Preview Modal
 window.toggleProfilePreview = function (isPreviewing) {
-    document.getElementById('profile-view-mode').classList.toggle('hidden', isPreviewing);
     document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
 };
 

@@ -74,6 +74,7 @@
                 <div id="profile-view-mode">
                     <h3 id="profile-display-name"></h3>
                     <p id="profile-display-bio" class="profile-bio"></p>
+                    <!-- Inside your profile card's #profile-view-mode -->
                     <div class="card-actions">
                         <button type="button" class="secondary small-btn" onclick="toggleProfileEdit(true)">Edit
                             Profile</button>
@@ -82,17 +83,7 @@
                     </div>
                 </div>
 
-                <!-- Preview Mode (Shows what your Secret Santa sees) -->
-                <div id="profile-preview-mode" class="hidden">
-                    <p><small><em>👀 This is how your Secret Santa sees your profile:</em></small></p>
-                    <div class="preview-box">
-                        <h3 id="preview-name"></h3>
-                        <p id="preview-bio" class="profile-bio"></p>
-                        <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
-                    </div>
-                    <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"
-                        style="margin-top: 1rem;">Close Preview</button>
-                </div>
+
 
                 <!-- Edit Mode (Hidden by default) -->
                 <form id="profile-edit-form" class="hidden">
@@ -151,6 +142,19 @@
                 <p>Browse everyone's characters and references!</p>
                 <div id="all-wishlists-gallery" class="horizontal-scroll-gallery"></div>
             </section>
+
+            <!-- PROFILE PREVIEW MODAL -->
+            <div id="profile-preview-mode" class="modal-overlay hidden"
+                onclick="if(event.target === this) toggleProfilePreview(false)">
+                <div class="modal-window card">
+                    <p><small><em>👀 This is how your Secret Santa sees your profile:</em></small></p>
+                    <h3 id="preview-name"></h3>
+                    <p id="preview-bio" class="profile-bio"></p>
+                    <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
+                    <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"
+                        style="margin-top: 1rem;">Close Preview</button>
+                </div>
+            </div>
 
         </div>
     </main>

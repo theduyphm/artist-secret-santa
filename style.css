@@ -255,10 +255,37 @@ hr {
     margin-bottom: 1rem;
 }
 
-.preview-box {
-    border: 2px dashed var(--border, #ccc);
-    border-radius: 10px;
+/* Full-screen dark semi-transparent backdrop */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* See-through black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
     padding: 1rem;
-    margin-top: 0.5rem;
-    background-color: #fcfcfc;
+    box-sizing: border-box;
+}
+
+/* Make sure .hidden overrides display: flex */
+.modal-overlay.hidden {
+    display: none;
+}
+
+/* Centered popup window */
+.modal-window {
+    background: #ffffff;
+    width: 100%;
+    max-width: 650px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
