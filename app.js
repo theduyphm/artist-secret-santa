@@ -102,30 +102,7 @@ function renderDashboard(user) {
     const myItems = appData.wishlist.filter(item => item.user_id === user.id);
     const myWishlist = document.getElementById('my-wishlist');
 
-    myWishlist.innerHTML = myItems.map(item => `
-        <div class="art-card">
-            <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
-            <div class="art-card-body">
-                <div id="view-mode-${item.id}">
-                    <p>${item.description}</p>
-                    <div class="card-actions">
-                        <button type="button" class="secondary small-btn" onclick="toggleEditMode('${item.id}', true)">Edit</button>
-                        <button type="button" class="danger-btn small-btn" onclick="deleteWishlistItem('${item.id}')">Delete</button>
-                    </div>
-                </div>
-
-                <form id="edit-mode-${item.id}" class="edit-wishlist-form hidden" onsubmit="saveWishlistEdit(event, '${item.id}')">
-                    <label><small>Replace Image (optional):</small></label>
-                    <input type="file" id="edit-img-${item.id}" accept="image/*">
-                    <textarea id="edit-desc-${item.id}" required>${item.description}</textarea>
-                    <div class="card-actions">
-                        <button type="submit" class="small-btn">Save</button>
-                        <button type="button" class="secondary small-btn" onclick="toggleEditMode('${item.id}', false)">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    `).join('');
+    myWishlist.innerHTML = myItems.map(item => renderWishlistCard(item, true)).join('');
 
     // Populate Profile Preview Mode
     document.getElementById('preview-name').textContent = user.name;
@@ -170,12 +147,7 @@ function renderDashboard(user) {
             if (targetItems.length === 0) {
                 targetWishlist.innerHTML = '<p><em>This artist has not added any OCs to their wishlist yet!</em></p>';
             } else {
-                targetWishlist.innerHTML = targetItems.map(item => `
-                    <div class="art-card">
-                        <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="Target OC"></a>
-                        <div class="art-card-body"><p>${item.description}</p></div>
-                    </div>
-                `).join('');
+                targetWishlist.innerHTML = targetItems.map(item => renderWishlistCard(item, false)).join('');
             }
         }
     }
@@ -322,12 +294,7 @@ window.openArtistModal = function (userId) {
     if (artistItems.length === 0) {
         previewWishlist.innerHTML = '<p><em>No OCs added to their wishlist yet!</em></p>';
     } else {
-        previewWishlist.innerHTML = artistItems.map(item => `
-            <div class="art-card">
-                <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
-                <div class="art-card-body"><p>${item.description}</p></div>
-            </div>
-        `).join('');
+        previewWishlist.innerHTML = artistItems.map(item => renderWishlistCard(item, false)).join('');
     }
 
     document.getElementById('profile-preview-mode').classList.remove('hidden');
@@ -370,6 +337,109 @@ document.getElementById('profile-edit-form').onsubmit = async (e) => {
 
     toggleProfileEdit(false);
     await loadData();
+};
+
+// Helper: Render an OC Wishlist Card with Anonymous Q&A Comments
+function renderWishlistCard(item, isOwner = false) {
+    const comments = item.comments || [];
+    const commentsHtml = comments.length > 0
+        ? comments.map(c => `<div class="oc-comment">${escapeHtml(c)}</div>`).join('')
+        : '<p class="no-comments"><small><em>No questions yet.</em></small></p>';
+
+    return `
+        <div class="art-card">
+            <a href="${item.image_url}" target="_blank"><img src="${item.image_url}" alt="OC Ref"></a>
+            <div class="art-card-body">
+                <div id="view-mode-${item.id}">
+                    <p>${escapeHtml(item.description)}</p>
+                    ${isOwner ? `
+                        <div class="card-actions">
+                            <button type="button" class="secondary small-btn" onclick="toggleEditMode('${item.id}', true)">Edit</button>
+                            <button type="button" class="danger-btn small-btn" onclick="deleteWishlistItem('${item.id}')">Delete</button>
+                        </div>
+                    ` : ''}
+                </div>
+
+                ${isOwner ? `
+                    <form id="edit-mode-${item.id}" class="edit-wishlist-form hidden" onsubmit="saveWishlistEdit(event, '${item.id}')">
+                        <label><small>Replace Image (optional):</small></label>
+                        <input type="file" id="edit-img-${item.id}" accept="image/*">
+                        <textarea id="edit-desc-${item.id}" required>${escapeHtml(item.description)}</textarea>
+                        <div class="card-actions">
+                            <button type="submit" class="small-btn">Save</button>
+                            <button type="button" class="secondary small-btn" onclick="toggleEditMode('${item.id}', false)">Cancel</button>
+                        </div>
+                    </form>
+                ` : ''}
+
+                <hr>
+
+                <!-- Anonymous Q&A Comments Section -->
+                <div class="oc-comments-section">
+                    <strong>💬 Questions & Answers</strong>
+                    <div class="oc-comments-list">${commentsHtml}</div>
+                    <form class="oc-comment-form" onsubmit="addOcComment(event, '${item.id}')">
+                        <input type="text" placeholder="Ask a question or reply..." required>
+                        <button type="submit" class="small-btn">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Basic XSS protection for user-typed comments/descriptions
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+// Save a new comment onto the wishlist item's comments array
+window.addOcComment = async function (event, itemId) {
+    event.preventDefault();
+    const form = event.target;
+    const input = form.querySelector('input');
+    const btn = form.querySelector('button');
+    const text = input.value.trim();
+    if (!text) return;
+
+    btn.disabled = true;
+
+    try {
+        // Fetch latest comments first so simultaneous comments don't overwrite each other
+        const { data: latestItem, error: fetchError } = await db
+            .from('wishlist_items')
+            .select('comments, user_id')
+            .eq('id', itemId)
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        const updatedComments = [...(latestItem.comments || []), text];
+
+        const { error: updateError } = await db
+            .from('wishlist_items')
+            .update({ comments: updatedComments })
+            .eq('id', itemId);
+
+        if (updateError) throw updateError;
+
+        await loadData();
+
+        // If the artist modal is currently open, refresh its contents too
+        const modal = document.getElementById('profile-preview-mode');
+        if (modal && !modal.classList.contains('hidden')) {
+            openArtistModal(latestItem.user_id);
+        }
+    } catch (err) {
+        alert('Could not post comment: ' + err.message);
+    } finally {
+        btn.disabled = false;
+    }
 };
 
 

@@ -214,11 +214,14 @@ hr {
 
 .horizontal-scroll-gallery {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    /* Allows cards to stay centered on rows without clipping on the left */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     gap: 1rem;
-    margin-top: 1rem;
+    padding: 0.5rem 0.2rem 1rem 0.2rem;
+    width: 100%;
+    box-sizing: border-box;
+    scroll-snap-type: x proximity;
 }
 
 .horizontal-scroll-gallery .art-card {
@@ -299,4 +302,45 @@ hr {
 .artist-directory-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.oc-comments-section {
+    text-align: left;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.oc-comments-list {
+    max-height: 140px;
+    overflow-y: auto;
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.oc-comment {
+    background: #f4f4f6;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    word-break: break-word;
+    font-size: 0.85rem;
+}
+
+.no-comments {
+    color: #888;
+    margin: 0.25rem 0;
+}
+
+.oc-comment-form {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.oc-comment-form input {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    margin: 0;
 }
