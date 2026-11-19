@@ -343,8 +343,14 @@ document.getElementById('profile-edit-form').onsubmit = async (e) => {
 function renderWishlistCard(item, isOwner = false) {
     const comments = item.comments || [];
     const commentsHtml = comments.length > 0
-        ? comments.map(c => `<div class="oc-comment">${escapeHtml(c)}</div>`).join('')
+        ? comments.map((c, index) => `
+            <div class="oc-comment">
+                <span>${escapeHtml(c)}</span>
+                <button type="button" class="delete-comment-btn" title="Delete comment" onclick="deleteOcComment('${item.id}', ${index})">✕</button>
+            </div>
+        `).join('')
         : '<p class="no-comments"><small><em>No questions yet.</em></small></p>';
+
 
     return `
         <div class="art-card">
@@ -439,6 +445,39 @@ window.addOcComment = async function (event, itemId) {
         alert('Could not post comment: ' + err.message);
     } finally {
         btn.disabled = false;
+    }
+};
+// Delete a comment at a given index from a wishlist item
+window.deleteOcComment = async function (itemId, commentIndex) {
+    if (!confirm('Delete this comment?')) return;
+
+    try {
+        const { data: latestItem, error: fetchError } = await db
+            .from('wishlist_items')
+            .select('comments, user_id')
+            .eq('id', itemId)
+            .single();
+
+        if (fetchError) throw fetchError;
+
+        const updatedComments = (latestItem.comments || []).filter((_, i) => i !== commentIndex);
+
+        const { error: updateError } = await db
+            .from('wishlist_items')
+            .update({ comments: updatedComments })
+            .eq('id', itemId);
+
+        if (updateError) throw updateError;
+
+        await loadData();
+
+        // Refresh the artist modal if it's currently open
+        const modal = document.getElementById('profile-preview-mode');
+        if (modal && !modal.classList.contains('hidden')) {
+            openArtistModal(latestItem.user_id);
+        }
+    } catch (err) {
+        alert('Could not delete comment: ' + err.message);
     }
 };
 
