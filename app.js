@@ -337,6 +337,7 @@ window.toggleProfilePreview = function (isPreviewing) {
     document.getElementById('profile-view-mode').classList.toggle('hidden', isPreviewing);
     document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
 };
+//
 
 // Start
 loadData();
