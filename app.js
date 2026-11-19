@@ -143,6 +143,15 @@ function renderDashboard(user) {
         const targetUser = appData.users.find(u => u.id === user.assigned_to);
         if (targetUser) {
             document.getElementById('target-name').textContent = targetUser.name;
+
+            const targetInfo = document.getElementById('target-profile-info');
+            if (targetInfo) {
+                targetInfo.innerHTML = `
+                    ${targetUser.bio ? `<p><em>"${targetUser.bio}"</em></p>` : ''}
+                    ${targetUser.socials ? `<p><strong>Socials:</strong> ${targetUser.socials}</p>` : ''}
+                `;
+            }
+
             const targetItems = appData.wishlist.filter(item => item.user_id === targetUser.id);
             const targetWishlist = document.getElementById('target-wishlist');
 
@@ -156,13 +165,6 @@ function renderDashboard(user) {
                     </div>
                 `).join('');
             }
-        }
-        const targetInfo = document.getElementById('target-profile-info');
-        if (targetInfo) {
-            targetInfo.innerHTML = `
-            ${targetUser.bio ? `<p><em>"${targetUser.bio}"</em></p>` : ''}
-            ${targetUser.socials ? `<p><strong>Socials:</strong> ${targetUser.socials}</p>` : ''}
-        `;
         }
     }
 
@@ -283,10 +285,10 @@ async function deleteWishlistItem(itemId) {
 }
 
 // Toggle Profile Edit Mode
-function toggleProfileEdit(isEditing) {
+window.toggleProfileEdit = function (isEditing) {
     document.getElementById('profile-view-mode').classList.toggle('hidden', isEditing);
     document.getElementById('profile-edit-form').classList.toggle('hidden', !isEditing);
-}
+};
 
 // Save Profile Updates
 document.getElementById('profile-edit-form').onsubmit = async (e) => {
