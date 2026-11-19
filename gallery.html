@@ -28,12 +28,12 @@
   </main>
 
   <script>
-    // List your past artwork file names/URLs here!
-    // If you put them in a folder named 'gallery-2025/', you can list them like this:
+    // List the filenames of the pictures you put inside your gallery_2025 folder
     const pastArtworks = [
-      { img: "gallery-2025/artwork1.png", drawnBy: "Artist A", forWho: "Artist B" },
-      { img: "gallery-2025/artwork2.png", drawnBy: "Artist C", forWho: "Artist D" },
-      // Add as many as you like here!
+      { file: "artwork1.png", drawnBy: "Artist A", forWho: "Artist B" },
+      { file: "artwork2.jpg", drawnBy: "Artist C", forWho: "Artist D" },
+      { file: "artwork3.png", drawnBy: "Artist E", forWho: "Artist F" }
+      // Just add more lines here for each picture you have!
     ];
 
     const gridContainer = document.getElementById('gallery-grid');
@@ -41,15 +41,19 @@
     if (pastArtworks.length === 0) {
       gridContainer.innerHTML = '<p><em>No artworks added to the gallery yet!</em></p>';
     } else {
-      gridContainer.innerHTML = pastArtworks.map(art => `
+      gridContainer.innerHTML = pastArtworks.map(art => {
+        // Automatically builds the path: gallery_2025/filename.png
+        const imgPath = `gallery_2025/${art.file}`;
+        return `
                 <div class="art-card gallery-item">
-                    <a href="${art.img}" target="_blank"><img src="${art.img}" alt="Gift by ${art.drawnBy}"></a>
+                    <a href="${imgPath}" target="_blank"><img src="${imgPath}" alt="Gift by ${art.drawnBy}"></a>
                     <div class="art-card-body">
                         <p><strong>Drawn by:</strong> ${art.drawnBy}</p>
                         <p><strong>For:</strong> ${art.forWho}</p>
                     </div>
                 </div>
-            `).join('');
+            `;
+      }).join('');
     }
   </script>
 </body>
