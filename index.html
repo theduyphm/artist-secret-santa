@@ -143,21 +143,22 @@
                 <div id="all-wishlists-gallery" class="horizontal-scroll-gallery"></div>
             </section>
 
-            <!-- PROFILE PREVIEW MODAL -->
-            <div id="profile-preview-mode" class="modal-overlay hidden"
-                onclick="if(event.target === this) toggleProfilePreview(false)">
-                <div class="modal-window card">
-                    <p><small><em>👀 This is how your Secret Santa sees your profile:</em></small></p>
-                    <h3 id="preview-name"></h3>
-                    <p id="preview-bio" class="profile-bio"></p>
-                    <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
-                    <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"
-                        style="margin-top: 1rem;">Close Preview</button>
-                </div>
-            </div>
-
         </div>
     </main>
+
+    <!-- PROFILE PREVIEW MODAL -->
+    <div id="profile-preview-mode" class="modal-overlay hidden"
+        onclick="if(event.target === this) toggleProfilePreview(false)">
+        <div class="modal-window card">
+            <p><small><em>👀 This is how your Secret Santa sees your profile:</em></small></p>
+            <h3 id="preview-name"></h3>
+            <p id="preview-bio" class="profile-bio"></p>
+            <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
+            <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"
+                style="margin-top: 1rem;">Close Preview</button>
+        </div>
+    </div>
+
 
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
