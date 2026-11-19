@@ -152,14 +152,19 @@
                 <div id="post-draw-area" class="hidden">
                     <!-- Spoiler Warning Gate -->
                     <div id="target-spoiler-gate" class="spoiler-box">
-                        <p><strong>🤫 Secret Santa Assignment</strong></p>
+                        <p><strong>🤫 Secret Santa Reveal</strong></p>
                         <p>Only <strong id="spoiler-user-name"></strong> should see this!</p>
-                        <button type="button" onclick="revealSecretSanta()">I understand, show my match</button>
+                        <button type="button" onclick="revealSecretSanta()">I understand, show my victim</button>
                     </div>
 
                     <!-- Hidden Assignment Content -->
                     <div id="target-reveal-content" class="hidden">
-                        <h3>🎁 You are drawing for: <span id="target-name"></span>!</h3>
+                        <h3>Your victim this year is: <span id="target-name"></span>!</h3>
+
+                        <p> you only have to draw 1 of the characters in their wishlist, even if they have multiple </p>
+                        <p> <i>traditionnal art is accepted, feel free to DM your Secret Santa if you want to ship the
+                                drawing after the 25th. I'll let you guys handle this privately.</i>
+                        </p>
                         <div id="target-profile-info"></div>
                         <div id="target-wishlist" class="horizontal-scroll-gallery"></div>
                     </div>
