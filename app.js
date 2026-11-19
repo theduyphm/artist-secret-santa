@@ -219,12 +219,22 @@ document.getElementById('logout-btn').onclick = () => {
 // Add Wishlist Item
 document.getElementById('wishlist-form').onsubmit = async (e) => {
     e.preventDefault();
+    const fileInput = document.getElementById('oc-image');
+    const file = fileInput.files[0];
+
+    if (!file) return;
+
+    // Check if file is larger than 20MB
+    if (file.size > 20 * 1024 * 1024) {
+        alert('File size exceeds 20MB! Please choose a smaller image.');
+        return;
+    }
+
     const btn = document.getElementById('wishlist-submit-btn');
     btn.disabled = true;
     btn.textContent = 'Uploading...';
 
     try {
-        const file = document.getElementById('oc-image').files[0];
         const description = document.getElementById('oc-desc').value;
         const imageUrl = await uploadImageToSupabase(file);
 
@@ -259,7 +269,15 @@ async function saveWishlistEdit(event, itemId) {
 
     try {
         if (fileInput.files[0]) {
-            updates.image_url = await uploadImageToSupabase(fileInput.files[0]);
+            const file = fileInput.files[0];
+
+            // Check if replacement file is larger than 20MB
+            if (file.size > 20 * 1024 * 1024) {
+                alert('File size exceeds 20MB! Please choose a smaller image.');
+                return;
+            }
+
+            updates.image_url = await uploadImageToSupabase(file);
         }
         await db.from('wishlist_items').update(updates).eq('id', itemId);
         await loadData();
