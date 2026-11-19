@@ -32,17 +32,27 @@ async function uploadImageToSupabase(file) {
 
 // Fetch all data from Supabase
 async function loadData() {
-    const [usersRes, wishlistRes, stateRes] = await Promise.all([
-        db.from('users').select('*'),
-        db.from('wishlist_items').select('*'),
-        db.from('app_state').select('*').eq('id', 1).single()
-    ]);
+    try {
+        const [usersRes, wishlistRes, stateRes] = await Promise.all([
+            db.from('users').select('*'),
+            db.from('wishlist_items').select('*'),
+            db.from('app_state').select('*').single()
+        ]);
 
-    appData.users = usersRes.data || [];
-    appData.wishlist = wishlistRes.data || [];
-    appData.drawn = stateRes.data ? stateRes.data.drawn : false;
+        if (usersRes.error) throw usersRes.error;
+        if (wishlistRes.error) throw wishlistRes.error;
 
-    render();
+        // Shuffle the users array randomly right as it loads
+        const shuffledUsers = (usersRes.data || []).sort(() => Math.random() - 0.5);
+
+        appData.users = shuffledUsers;
+        appData.wishlist = wishlistRes.data || [];
+        appData.drawn = stateRes.data ? stateRes.data.drawn : false;
+
+        render();
+    } catch (err) {
+        console.error('Failed to load data:', err.message);
+    }
 }
 
 function render() {
