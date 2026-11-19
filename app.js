@@ -302,6 +302,12 @@ window.toggleProfileEdit = function (isEditing) {
     document.getElementById('profile-edit-form').classList.toggle('hidden', !isEditing);
 };
 
+// Toggle Profile Preview Mode
+window.toggleProfilePreview = function (isPreviewing) {
+    document.getElementById('profile-view-mode').classList.toggle('hidden', isPreviewing);
+    document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
+};
+
 // Save Profile Updates
 document.getElementById('profile-edit-form').onsubmit = async (e) => {
     e.preventDefault();
@@ -332,12 +338,7 @@ document.getElementById('profile-edit-form').onsubmit = async (e) => {
     await loadData();
 };
 
-// Toggle Profile Preview Mode
-window.toggleProfilePreview = function (isPreviewing) {
-    document.getElementById('profile-view-mode').classList.toggle('hidden', isPreviewing);
-    document.getElementById('profile-preview-mode').classList.toggle('hidden', !isPreviewing);
-};
-//
+
 
 // Start
 loadData();
