@@ -17,33 +17,41 @@
   </header>
 
   <main>
-    <section class="card">
-      <h2>✨ Last Year's Amazing Artworks! ✨</h2>
-      <p>Take a look at all the wonderful gifts everyone drew for each other last year.</p>
+    <section class="card" style="max-width: 1000px; margin: 0 auto;">
+      <h2>✨ 2025 Gallery ✨</h2>
+      <p>Thank you all participants ☃️🎄🎁❤️</p>
 
-      <!-- Gallery Grid -->
-      <div class="horizontal-scroll-gallery" id="past-gallery">
-        <!-- Example Artwork Card 1 -->
-        <div class="art-card">
-          <a href="URL_TO_IMAGE_1" target="_blank"><img src="URL_TO_IMAGE_1" alt="Gift artwork"></a>
-          <div class="art-card-body">
-            <p><strong>Drawn by:</strong> Artist A</p>
-            <p><strong>For:</strong> Artist B</p>
-          </div>
-        </div>
 
-        <!-- Example Artwork Card 2 -->
-        <div class="art-card">
-          <a href="URL_TO_IMAGE_2" target="_blank"><img src="URL_TO_IMAGE_2" alt="Gift artwork"></a>
-          <div class="art-card-body">
-            <p><strong>Drawn by:</strong> Artist C</p>
-            <p><strong>For:</strong> Artist D</p>
-          </div>
-        </div>
-      </div>
+      <!-- Grid Container -->
+      <div id="gallery-grid" class="image-grid"></div>
     </section>
   </main>
 
+  <script>
+    // List your past artwork file names/URLs here!
+    // If you put them in a folder named 'gallery-2025/', you can list them like this:
+    const pastArtworks = [
+      { img: "gallery-2025/artwork1.png", drawnBy: "Artist A", forWho: "Artist B" },
+      { img: "gallery-2025/artwork2.png", drawnBy: "Artist C", forWho: "Artist D" },
+      // Add as many as you like here!
+    ];
+
+    const gridContainer = document.getElementById('gallery-grid');
+
+    if (pastArtworks.length === 0) {
+      gridContainer.innerHTML = '<p><em>No artworks added to the gallery yet!</em></p>';
+    } else {
+      gridContainer.innerHTML = pastArtworks.map(art => `
+                <div class="art-card gallery-item">
+                    <a href="${art.img}" target="_blank"><img src="${art.img}" alt="Gift by ${art.drawnBy}"></a>
+                    <div class="art-card-body">
+                        <p><strong>Drawn by:</strong> ${art.drawnBy}</p>
+                        <p><strong>For:</strong> ${art.forWho}</p>
+                    </div>
+                </div>
+            `).join('');
+    }
+  </script>
 </body>
 
 </html>
