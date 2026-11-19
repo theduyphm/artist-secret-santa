@@ -364,3 +364,11 @@ hr {
     color: #d9534f;
     background: transparent;
 }
+
+.modal-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}

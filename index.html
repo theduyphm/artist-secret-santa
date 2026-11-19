@@ -98,9 +98,12 @@
 
                 <hr>
 
+                <div id="my-wishlist" class="horizontal-scroll-gallery"></div>
+                <hr>
+
                 <!-- Wishlist Subsection -->
                 <h3>✨ My OC Wishlist</h3>
-                <p>Upload reference sheets and pictures of characters you'd love someone to draw!</p>
+                <p>Upload reference sheets and pictures of characters you'd like your secret santa to draw!</p>
 
                 <p> <i>It's usually your original characters (OC) or a favorite character from a show/videogame, but it
                         can be anything, a portrait of yourself, your pet, loved ones, etc.</i></p>
@@ -112,9 +115,6 @@
                     <button type="submit" id="wishlist-submit-btn">Add to My Wishlist</button>
                 </form>
 
-                <hr>
-
-                <div id="my-wishlist" class="horizontal-scroll-gallery"></div>
             </section>
 
 
@@ -152,7 +152,13 @@
     <div id="profile-preview-mode" class="modal-overlay hidden"
         onclick="if(event.target === this) toggleProfilePreview(false)">
         <div class="modal-window card">
-            <h3 id="preview-name"></h3>
+            <div class="modal-nav-header">
+                <button type="button" id="modal-prev-btn" class="secondary small-btn" onclick="navigateArtistModal(-1)"
+                    title="Previous Artist">← Prev</button>
+                <h3 id="preview-name" style="margin: 0;"></h3>
+                <button type="button" id="modal-next-btn" class="secondary small-btn" onclick="navigateArtistModal(1)"
+                    title="Next Artist">Next →</button>
+            </div>
             <p id="preview-bio" class="profile-bio"></p>
             <div id="preview-wishlist" class="horizontal-scroll-gallery"></div>
             <button type="button" class="secondary small-btn" onclick="toggleProfilePreview(false)"

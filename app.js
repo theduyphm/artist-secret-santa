@@ -6,6 +6,7 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let appData = { users: [], wishlist: [], drawn: false };
 let currentUserId = localStorage.getItem('secretSantaUserId');
+let currentModalUserId = null;
 
 const loginView = document.getElementById('login-view');
 const dashboardView = document.getElementById('dashboard-view');
@@ -279,16 +280,21 @@ window.toggleProfileEdit = function (isEditing) {
     document.getElementById('profile-edit-form').classList.toggle('hidden', !isEditing);
 };
 
-
-// Open Modal for ANY Artist (Used for both "Preview Profile" and clicking an artist card)
+// Open Modal for ANY Artist
 window.openArtistModal = function (userId) {
     const artist = appData.users.find(u => u.id === userId);
     if (!artist) return;
 
+    currentModalUserId = userId;
     const artistItems = appData.wishlist.filter(item => item.user_id === artist.id);
 
     document.getElementById('preview-name').textContent = artist.name;
     document.getElementById('preview-bio').textContent = artist.bio || 'No bio added yet.';
+
+    // Hide arrows if there's only 1 artist
+    const showArrows = appData.users.length > 1;
+    document.getElementById('modal-prev-btn').style.visibility = showArrows ? 'visible' : 'hidden';
+    document.getElementById('modal-next-btn').style.visibility = showArrows ? 'visible' : 'hidden';
 
     const previewWishlist = document.getElementById('preview-wishlist');
     if (artistItems.length === 0) {
@@ -299,6 +305,30 @@ window.openArtistModal = function (userId) {
 
     document.getElementById('profile-preview-mode').classList.remove('hidden');
 };
+
+// Switch to Previous (-1) or Next (+1) Artist in the Modal
+window.navigateArtistModal = function (direction) {
+    if (!currentModalUserId || appData.users.length <= 1) return;
+
+    const currentIndex = appData.users.findIndex(u => u.id === currentModalUserId);
+    if (currentIndex === -1) return;
+
+    // Wrap around cleanly at the start and end of the list
+    const nextIndex = (currentIndex + direction + appData.users.length) % appData.users.length;
+    openArtistModal(appData.users[nextIndex].id);
+};
+
+// Optional: Keyboard support (Left/Right arrows to switch artists, Esc to close)
+document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('profile-preview-mode');
+    if (!modal || modal.classList.contains('hidden')) return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return; // Don't hijack typing in comments
+
+    if (e.key === 'ArrowLeft') navigateArtistModal(-1);
+    if (e.key === 'ArrowRight') navigateArtistModal(1);
+    if (e.key === 'Escape') toggleProfilePreview(false);
+});
+
 
 // Toggle Profile Preview Modal (Defaults to opening your own profile when passed true)
 window.toggleProfilePreview = function (isPreviewing) {
